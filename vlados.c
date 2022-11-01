@@ -3,9 +3,6 @@
 #include <assert.h>
 #pragma warning(disable:4996)
 
-int new_len1;
-int new_len2;
-
 int* sub_arr(int* arr, size_t len) {
 
 	int* sub_arr = (int*)malloc(len * sizeof(int));
@@ -30,7 +27,7 @@ void printArr(int* arr1, size_t len) {
 	}
 }
 
-int* del_neg(int *arr, size_t len) {
+int* del_neg(int *arr, size_t len, int* new_size) {
 	size_t j = 0;
 	int* sub_arr = (int*)malloc(len * sizeof(int));
 	for (size_t i = 0; i < len; i++) {
@@ -39,11 +36,11 @@ int* del_neg(int *arr, size_t len) {
 			j += 1;
 		}
 	}
-	new_len1 = j;
+	*new_size = j;
 	return sub_arr;
 }
 
-int* del_pos(int *arr, size_t len) {
+int* del_pos(int *arr, size_t len,int *new_size) {
 	size_t j = 0;
 	int* sub_arr = (int*)malloc(len * sizeof(int));
 	for (size_t i = 0; i < len; i++) {
@@ -52,7 +49,7 @@ int* del_pos(int *arr, size_t len) {
 			j += 1;
 		}
 	}
-	new_len2 = j;
+	*new_size = j;
 	return sub_arr;
 }
 
@@ -60,8 +57,8 @@ int main() {
 	size_t len1 = 5;
 	size_t len2 = 8;
 
-	int arr1[] = {1, 2, -3, 4, -5};
-	int arr2[] = { 1, -1, 2, -2, 3, -3, 4, -4 };
+	int arr1[] = {1, 2, -3, 4, -5, -6, 7, -8};
+	int arr2[] = { 1, -1, 2, -2, 3, -3, 4, -4, -5, -6, -7, 10, 11, 12 };
 
 	int* sub1 = sub_arr(arr1, len1);
 	printArr(sub1, len1);
@@ -77,22 +74,24 @@ int main() {
 	printf("%d\n", val1);
 	printf("%d", val2);
 
+	int size1 = 0;
+	int size2 = 0;
+
 	int* new_arr1, * new_arr2;
 
 	if (check_arr(sub1, len1)) {
-		new_arr1 = del_neg(arr1, len1);
+		new_arr1 = del_neg(arr1, len1, &size1);
 	} else{
-		new_arr1 = del_pos(arr1, len1);
+		new_arr1 = del_pos(arr1, len1, &size1);
 	}
 	
 	if (check_arr(sub2, len2)) {
-		new_arr2 = del_neg(arr2, len2);
+		new_arr2 = del_neg(arr2, len2, &size2);
 	} else {
-		new_arr2 = del_pos(arr2, len2);
+		new_arr2 = del_pos(arr2, len2, &size2);
 	}
-
 	printf("\n");
-	printArr(new_arr1, new_len1);
+	printArr(new_arr1, size1);
 	printf("\n");
-	printArr(new_arr2, new_len2);
+	printArr(new_arr2, size2);
 }
